@@ -1,0 +1,15 @@
+[Unit]
+Description=A high performance carbon relay for graphite
+After=network.target
+
+[Service]
+# not Type=simple because of start-stop-daemon
+Type=forking
+EnvironmentFile=/etc/default/carbon-c-relay
+PIDFile=$PIDFILE
+ExecStartPre=install -o carbon -g carbon -m 755 -d /run/carbon
+ExecStart=start-stop-daemon --start --quiet --pidfile $PIDFILE --chuid carbon --background --make-pidfile --exec /usr/sbin/carbon-c-relay -- $OPTS
+ExecStop=start-stop-daemon --stop --quiet --user carbon --retry=TERM/30/KILL/5 --pidfile $PIDFILE
+
+[Install]
+WantedBy=multi-user.target
