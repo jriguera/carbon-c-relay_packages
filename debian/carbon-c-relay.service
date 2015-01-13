@@ -1,0 +1,13 @@
+[Unit]
+Description=A high performance carbon relay for graphite
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/default/carbon-c-relay
+PIDFile=$PIDFILE
+User=carbon
+ExecStart=/usr/sbin/carbon-c-relay $OPTS
+
+[Install]
+WantedBy=multi-user.target

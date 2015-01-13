@@ -1,13 +1,6 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
-ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
-	SUBSTVARS = -Vdist:Depends="foo (>= 2)"
-else
-	SUBSTVARS = -Vdist:Depends="bar"
-endif
-
-
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
 export DH_ALWAYS_EXCLUDE=.git:.gitignore
@@ -20,6 +13,8 @@ override_dh_auto_test:
 
 override_dh_auto_install:
 	$(MAKE) install PREFIX=$(CURDIR)/debian/carbon-c-relay/usr DESTDIR=$(CURDIR)/debian/carbon-c-relay/etc/carbon
+	# override debian package configuration file
+	install -m 0644 $(CURDIR)/debian/carbon-c-relay.conf $(CURDIR)/debian/carbon-c-relay/etc/carbon
 
 %:
 	dh $@
