@@ -25,7 +25,7 @@ ADD config/*.conf /etc/carbon/
 
 # runinit
 RUN mkdir /etc/service/carbon-c-relay
-RUN sh -c 'echo "#!/bin/sh\n. /etc/default/carbon-c-relay\nexec /sbin/setuser carbon /usr/sbin/carbon-c-relay \$OPTS" >> /etc/service/carbon-c-relay/run'
+RUN sh -c 'echo "#!/bin/sh\n. /etc/default/carbon-c-relay\nexec /sbin/setuser carbon /usr/sbin/carbon-c-relay \$OPTS" > /etc/service/carbon-c-relay/run'
 RUN chmod 0755 /etc/service/carbon-c-relay/run
 
 EXPOSE 2003
