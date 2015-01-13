@@ -1,6 +1,8 @@
 *.o
 sbin
 obj
+.vagrant
+*.deb
 debian/carbon-c-relay.substvars
 debian/carbon-c-relay.*.debhelper
 debian/carbon-c-relay/
