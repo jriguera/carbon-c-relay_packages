@@ -15,8 +15,6 @@ export DEBEMAIL="$1"
 export DEBFULLNAME="$2"
 make debuild
 cd /tmp/ && dpkg -i carbon-c-relay*.deb
-sed -i 's/^DISABLE=1/DISABLE=0/g' /etc/default/carbon-c-relay
-service carbon-c-relay start
 cp /tmp/carbon-c-relay*.deb /vagrant
 SCRIPT
 
