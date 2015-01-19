@@ -19,7 +19,11 @@ RUN rm -rf /etc/service/sshd /etc/my_init.d/00_regen_ssh_host_keys.sh
 RUN apt-get update
 
 # install package or download it from releases
-ADD *.deb /tmp/
+# ADD *.deb /tmp/
+# Latest release: https://github.com/jriguera/carbon-c-relay_packages/releases/latest
+ADD https://github.com/jriguera/carbon-c-relay_packages/releases/download/0.37/carbon-c-relay_0.37_amd64.deb /tmp/
+
+# Install
 RUN dpkg -i /tmp/*.deb
 ADD config/*.conf /etc/carbon/
 
