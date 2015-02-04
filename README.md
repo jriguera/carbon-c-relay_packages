@@ -16,7 +16,7 @@ with carbon-c-relay.
 Building
 --------
 Just type `vagrant up` to create a vm and run all scripts, when finished 
-a deb package will appear. You can have a look at Vagrantfile to see the 
+the deb and rpm packages will appear. You can have a look at Vagrantfile to see the 
 build process.
 
 If you want to build it in your computer, just type `make`. If you want 
