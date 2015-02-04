@@ -16,8 +16,10 @@ GIT      = git
 INSTALL  = install
 DEBUILD  = debuild
 DEBCLEAN = debclean
+RPMBUILD = rpmbuild
 
 # project name (generate executable with this name)
+DISTDIR          = .
 DESTDIR		 = /usr/local/etc/carbon
 PREFIX           = /usr/local
 TARGET           = carbon-c-relay
@@ -43,7 +45,6 @@ LFLAGS           = -O2 -Wall -lm $(LIBS)
 SOURCES  := $(wildcard $(SRCDIR)/*.c)
 INCLUDES := $(wildcard $(SRCDIR)/*.h)
 OBJECTS  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-
 
 all: folders $(BINDIR)/$(TARGET)
 
@@ -76,11 +77,15 @@ VERSION = $(shell sed -n '/VERSION/s/^.*"\([0-9.]\+\)".*$$/\1/p' $(SRCDIR)/relay
 .PHONY: dist
 dist:
 	@$(GIT) archive \
-		--format=tar.gz \
-		--prefix=$(TARGET)-$(VERSION)/ v$(VERSION) \
-		> $(TARGET)-$(VERSION).tar.gz
-	@echo "Created $(TARGET)-$(VERSION).tar.gz successfully!"
+		--format=tar \
+		--prefix=$(TARGET)-$(VERSION)/ HEAD \
+		| gzip > $(DISTDIR)/$(TARGET)-$(VERSION).tar.gz
+	@echo "Created $(DISTDIR)/$(TARGET)-$(VERSION).tar.gz successfully!"
 
+# Centos/RH packages
+.PHONY: rpmbuild
+rpmbuild:
+	$(RPMBUILD) --define "_topdir ${PWD}/rpm"   -ba rpm/SPECS/$(TARGET).spec
 
 # check if the local environment is suitable to generate a package
 # we check environment variables and a gpg private key matching
@@ -99,7 +104,7 @@ endif
 
 # creates the .deb package and other related files
 # all files are placed in ../
-.PHONY: builddeb
+.PHONY: debuild
 debuild: checkenv
 	# dpkg-buildpackage + lintian
 	# -sa    Forces the inclusion of the original source.
@@ -126,11 +131,13 @@ changelog:
 .PHONY: clean
 clean:
 	@$(RM) $(OBJECTS)
+	@$(RM) -r rpm/SOURCES rpm/BUILD rpm/BUILDROOT
 	@echo "Cleanup complete!"
 
 .PHONY: dist-clean
 distclean: clean
 	@$(RM) -r $(BINDIR)
 	@$(RM) -r $(OBJDIR)
-	@$(RM) $(TARGET)-$(VERSION).tar.gz
+	@$(RM) -r rpm/SOURCES rpm/BUILD rpm/BUILDROOT rpm/RPMS rpm/SRPMS
+	@$(RM) $(TARGET).*$(VERSION).*
 	@echo "Executable removed!"
