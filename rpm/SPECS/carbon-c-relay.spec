@@ -1,5 +1,5 @@
 %define name     carbon-c-relay
-%define version  0.37
+%define version  1.2
 
 Name:            %{name}           
 Version:         %{version}
