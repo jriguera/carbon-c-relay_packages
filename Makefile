@@ -116,8 +116,9 @@ debuild: checkenv
 .PHONY: newrelease
 newrelease:
 	debchange --changelog debian/changelog --urgency high --newversion $(VERSION)-1 "Releasing $(TARGET) $(VERSION)"
+	sed -i '/%define.*version/s/^%define.* \([0-9.]\+\).*$$/%define version $(VERSION)/g' rpm/SPECS/carbon-c-relay.spec
 
-# creates a new version in debian/changelog
+# creates a new version in debian/changelog (only for debian)
 .PHONY: newversion
 newversion:
 	debchange --changelog debian/changelog -i --urgency high
