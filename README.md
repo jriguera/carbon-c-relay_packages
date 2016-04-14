@@ -50,6 +50,13 @@ Now, to check the process on the vm, just type: `vagrant ssh ubuntu`
 just type `vagrant destroy` to destroy the vm(s).
 
 
+For Debian, you can define these variables to create the packages:
+```
+export DEBEMAIL
+export DEBFULLNAME
+```
+
+
 Docker
 ------
 
