@@ -24,7 +24,7 @@ DESTDIR		 = /usr/local/etc/carbon
 PREFIX           = /usr/local
 TARGET           = carbon-c-relay
 GIT_VERSION     := $(shell git describe --abbrev=6 --dirty --always || date +%F)
-GVCFLAGS        += -DGIT_VERSION=\"$(GIT_VERSION)\"
+GVCFLAGS        += -DGIT_VERSION=\"$(GIT_VERSION)\" -DVERSION=\"3.0\"
 
 # change these to set the proper directories where each files shoould be
 SRCDIR   = src
@@ -32,7 +32,7 @@ OBJDIR   = obj
 BINDIR   = sbin
 
 # compiling flags here
-CFLAGS          ?= -O2 -Wall
+CFLAGS          ?= -O3 -Wall -Werror -Wshadow -pipe
 override CFLAGS += $(GVCFLAGS) `pkg-config openssl --cflags` -pthread
 
 # linking flags here
@@ -40,7 +40,7 @@ override LIBS   += `pkg-config openssl --libs` -pthread
 ifeq ($(shell uname), SunOS)
 override LIBS   += -lsocket  -lnsl
 endif
-LFLAGS           = -O2 -Wall -lm $(LIBS)
+LFLAGS           = -O3 -Wall -Werror -Wshadow -pipe -lm $(LIBS)
 
 SOURCES  := $(wildcard $(SRCDIR)/*.c)
 INCLUDES := $(wildcard $(SRCDIR)/*.h)
